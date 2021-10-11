@@ -15,7 +15,4 @@ app.use(express_1.default.json()); // Parse JSON bodies (as sent by API clients)
 var PORT = process.env.PORT || 8080;
 app.listen(PORT, function () { return console.log("Listening to " + PORT); });
 app.disable('etag'); //to guarantee that res.statusCode = 200, unless there is an error
-app.use("*", function (req, res) {
-    res.send("<h1>Caballero|Account API</h1>");
-});
 app.use(accountRoutes_1.default);
