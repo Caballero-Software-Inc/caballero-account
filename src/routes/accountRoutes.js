@@ -40,43 +40,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var email_1 = require("../channels/email");
-var awsDynamoDB_1 = require("../db/awsDynamoDB");
-var cryptoTools_1 = require("../helpers/cryptoTools");
-var languageTools_1 = require("../helpers/languageTools");
+/*
+import { sendEmail } from "../channels/email";
+import { putUser } from "../db/awsDynamoDB";
+import { makeId } from "../helpers/cryptoTools";
+import { l } from "../helpers/languageTools";
+*/
 var router = express_1.default.Router();
 router.get('/account/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, lang, id, from, subject, body, html;
+    var email, lang;
     return __generator(this, function (_a) {
         email = req.query.email;
-        ;
         lang = req.query.lang;
-        if (email === '') {
-            res.json({
-                ok: false,
-                error: (0, languageTools_1.l)({
-                    "en": "You must write your email address.",
-                    "fr": "Vous devez écrire votre adresse électronique."
-                }, lang)
-            });
-        }
-        else {
-            id = (0, cryptoTools_1.makeId)(50);
-            (0, awsDynamoDB_1.putUser)({ email: email, id: id, credits: 0 });
-            from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
-            subject = (0, languageTools_1.l)({
-                "en": "Identifier",
-                "fr": "Identifiant"
-            }, lang) + " (Caballero Software Inc.)";
-            body = (0, languageTools_1.l)({
-                "en": "Your identifier for Caballero Software Inc. is: ",
-                "fr": "Votre identifiant pour Caballero Software Inc. est : "
-            }, lang)
-                + id;
-            html = "<b>" + body + "</b>";
-            (0, email_1.sendEmail)(from, email, subject, body, html);
-            res.json({ ok: true });
-        }
+        res.json({ email: email, lang: lang });
         return [2 /*return*/];
     });
 }); });

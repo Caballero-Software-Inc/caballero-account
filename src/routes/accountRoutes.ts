@@ -1,16 +1,22 @@
 'use strict';
 
 import express from "express";
+/*
 import { sendEmail } from "../channels/email";
 import { putUser } from "../db/awsDynamoDB";
 import { makeId } from "../helpers/cryptoTools";
 import { l } from "../helpers/languageTools";
-
+*/
 
 const router = express.Router();
 
 router.get('/account/register', async (req, res): Promise<void> => {
-        const email = req.query.email as string;;
+    const email = req.query.email as string;
+    const lang = req.query.lang as string;
+    res.json({ email, lang })
+
+    /*
+        const email = req.query.email as string;
         const lang = req.query.lang as string;
         
         if (email === '') {
@@ -38,6 +44,7 @@ router.get('/account/register', async (req, res): Promise<void> => {
             sendEmail(from, email, subject, body, html);
             res.json({ ok: true });
         }    
-    })
+        */
+})
 
 export default router;
