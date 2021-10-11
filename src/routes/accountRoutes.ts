@@ -1,21 +1,17 @@
 'use strict';
 
 import express from "express";
-/*
-import { sendEmail } from "../channels/email";
-import { putUser } from "../db/awsDynamoDB";
-import { makeId } from "../helpers/cryptoTools";
+
+//import { sendEmail } from "../channels/email";
+//import { putUser } from "../db/awsDynamoDB";
+//import { makeId } from "../helpers/cryptoTools";
 import { l } from "../helpers/languageTools";
-*/
+
 
 const router = express.Router();
 
 router.get('/account/register', async (req, res): Promise<void> => {
-    const email = req.query.email as string;
-    const lang = req.query.lang as string;
-    res.json({ email, lang })
 
-    /*
         const email = req.query.email as string;
         const lang = req.query.lang as string;
         
@@ -28,6 +24,7 @@ router.get('/account/register', async (req, res): Promise<void> => {
                 }, lang)
             });
         } else {
+            /*
             const id = makeId(50);
             putUser({ email, id, credits: 0 });
             const from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
@@ -42,9 +39,9 @@ router.get('/account/register', async (req, res): Promise<void> => {
                 + id;
             const html = "<b>" + body + "</b>";
             sendEmail(from, email, subject, body, html);
+            */
             res.json({ ok: true });
         }    
-        */
 })
 
 export default router;
