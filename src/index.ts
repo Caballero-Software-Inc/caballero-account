@@ -17,6 +17,11 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Listening to ${PORT}`));
 app.disable('etag');//to guarantee that res.statusCode = 200, unless there is an error
 
+
+app.use("*",(req, res) =>{
+    res.send("<h1>Caballero|Account API</h1>");
+});
+
 app.use(accountRoutes);
 
 
