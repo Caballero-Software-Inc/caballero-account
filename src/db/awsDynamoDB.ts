@@ -4,19 +4,19 @@ dotenv.config();
 import AWS from 'aws-sdk';
 
 AWS.config.update({
-    region: process.env.REGION,
-    accessKeyId: process.env.AccessKeyID,
-    secretAccessKey: process.env.SecretAccessKey
+    region: process.env.REGION as string,
+    accessKeyId: process.env.AccessKeyID as string,
+    secretAccessKey: process.env.SecretAccessKey as string
 });
 
 let documentClient = new AWS.DynamoDB.DocumentClient();
 
 const TABLE_NAME_USER = "users-caballero";
 
-export async function putUser(user: any) {
+export async function putUser(user: any): Promise<void> {
     const params = {
         TableName: TABLE_NAME_USER,
         Item: user
     };
-    return await documentClient.put(params).promise();
+    await documentClient.put(params).promise();
 }

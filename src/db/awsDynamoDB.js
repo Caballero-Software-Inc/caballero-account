@@ -61,7 +61,9 @@ function putUser(user) {
                         Item: user
                     };
                     return [4 /*yield*/, documentClient.put(params).promise()];
-                case 1: return [2 /*return*/, _a.sent()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
             }
         });
     });
