@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Caballero-Software-Inc/caballero-account#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/nodemailer": "^6.4.4",
     "aws-sdk": "^2.1005.0",
