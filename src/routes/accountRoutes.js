@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-//import { sendEmail } from "../channels/email";
+var email_1 = require("../channels/email");
 //import { putUser } from "../db/awsDynamoDB";
 var cryptoTools_1 = require("../helpers/cryptoTools");
 var languageTools_1 = require("../helpers/languageTools");
@@ -72,7 +72,7 @@ router.get('/account/register', function (req, res) { return __awaiter(void 0, v
             }, lang)
                 + id;
             html = "<b>" + body + "</b>";
-            //sendEmail(from, email, subject, body, html);
+            (0, email_1.sendEmail)(from, email, subject, body, html);
             res.json({ ok: true, id: id });
         }
         return [2 /*return*/];

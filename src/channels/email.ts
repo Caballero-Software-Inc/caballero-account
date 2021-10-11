@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const appLogin = process.env.APPEmail;
-const appPassword = process.env.APPPASSWORD;
+const appLogin: string = process.env.APPEmail as string;
+const appPassword: string = process.env.APPPASSWORD as string;
 
 export async function sendEmail(from: string, to: string, subject: string, text: string, html: string): Promise<void> {
 
@@ -23,7 +23,7 @@ export async function sendEmail(from: string, to: string, subject: string, text:
     });
 
     // send mail with defined transport object
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
         from,
         to,
         subject,

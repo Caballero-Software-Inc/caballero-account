@@ -47,7 +47,7 @@ var appLogin = process.env.APPEmail;
 var appPassword = process.env.APPPASSWORD;
 function sendEmail(from, to, subject, text, html) {
     return __awaiter(this, void 0, void 0, function () {
-        var transporter, info;
+        var transporter;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -63,6 +63,7 @@ function sendEmail(from, to, subject, text, html) {
                             rejectUnauthorized: false
                         }
                     });
+                    // send mail with defined transport object
                     return [4 /*yield*/, transporter.sendMail({
                             from: from,
                             to: to,
@@ -71,7 +72,8 @@ function sendEmail(from, to, subject, text, html) {
                             html: html
                         })];
                 case 1:
-                    info = _a.sent();
+                    // send mail with defined transport object
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
