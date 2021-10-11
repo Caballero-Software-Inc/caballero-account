@@ -42,13 +42,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.putUser = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-var aws_sdk_1 = __importDefault(require("aws-sdk"));
-aws_sdk_1.default.config.update({
+var dynamodb_1 = require("aws-sdk/clients/dynamodb");
+var documentClient = new dynamodb_1.DocumentClient({
     region: process.env.REGION,
     accessKeyId: process.env.AccessKeyID,
     secretAccessKey: process.env.SecretAccessKey
 });
-var documentClient = new aws_sdk_1.default.DynamoDB.DocumentClient();
 var TABLE_NAME_USER = "users-caballero";
 function putUser(user) {
     return __awaiter(this, void 0, void 0, function () {

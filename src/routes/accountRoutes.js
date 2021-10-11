@@ -74,7 +74,7 @@ router.get('/account/register', function (req, res) { return __awaiter(void 0, v
                 + id;
             html = "<b>" + body + "</b>";
             (0, email_1.sendEmail)(from, email, subject, body, html);
-            res.json({ ok: true, id: id });
+            res.json({ ok: true });
         }
         return [2 /*return*/];
     });
