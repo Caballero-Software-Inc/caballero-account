@@ -39,7 +39,7 @@ router.get('/account/register', async (req, res): Promise<void> => {
                 + id;
             const html = "<b>" + body + "</b>";
             sendEmail(from, email, subject, body, html);
-            res.json({ ok: true, id });
+            res.json({ ok: true });
         }    
 })
 
