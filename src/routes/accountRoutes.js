@@ -42,11 +42,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 //import { sendEmail } from "../channels/email";
 //import { putUser } from "../db/awsDynamoDB";
-//import { makeId } from "../helpers/cryptoTools";
+var cryptoTools_1 = require("../helpers/cryptoTools");
 var languageTools_1 = require("../helpers/languageTools");
 var router = express_1.default.Router();
 router.get('/account/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, lang;
+    var email, lang, id;
     return __generator(this, function (_a) {
         email = req.query.email;
         lang = req.query.lang;
@@ -60,8 +60,8 @@ router.get('/account/register', function (req, res) { return __awaiter(void 0, v
             });
         }
         else {
+            id = (0, cryptoTools_1.makeId)(50);
             /*
-            const id = makeId(50);
             putUser({ email, id, credits: 0 });
             const from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
             const subject = `${l({
@@ -76,7 +76,7 @@ router.get('/account/register', function (req, res) { return __awaiter(void 0, v
             const html = "<b>" + body + "</b>";
             sendEmail(from, email, subject, body, html);
             */
-            res.json({ ok: true });
+            res.json({ ok: true, id: id });
         }
         return [2 /*return*/];
     });

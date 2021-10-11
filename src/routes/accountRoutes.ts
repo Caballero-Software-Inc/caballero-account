@@ -4,7 +4,7 @@ import express from "express";
 
 //import { sendEmail } from "../channels/email";
 //import { putUser } from "../db/awsDynamoDB";
-//import { makeId } from "../helpers/cryptoTools";
+import { makeId } from "../helpers/cryptoTools";
 import { l } from "../helpers/languageTools";
 
 
@@ -24,8 +24,9 @@ router.get('/account/register', async (req, res): Promise<void> => {
                 }, lang)
             });
         } else {
-            /*
+            
             const id = makeId(50);
+            /*
             putUser({ email, id, credits: 0 });
             const from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
             const subject = `${l({
@@ -40,7 +41,7 @@ router.get('/account/register', async (req, res): Promise<void> => {
             const html = "<b>" + body + "</b>";
             sendEmail(from, email, subject, body, html);
             */
-            res.json({ ok: true });
+            res.json({ ok: true, id });
         }    
 })
 
