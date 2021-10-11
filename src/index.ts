@@ -1,7 +1,7 @@
 'use strict';
 import express from 'express';
 import cors from "cors";
-//import accountRoutes from './routes/accountRoutes';
+import accountRoutes from './routes/accountRoutes';
 const app = express();
 app.use(
     cors({
@@ -22,6 +22,6 @@ app.use("*",(req, res) =>{
     res.send("<h1>Caballero|Account API</h1>");
 });
 
-//app.use(accountRoutes);
+app.use(accountRoutes);
 
 
