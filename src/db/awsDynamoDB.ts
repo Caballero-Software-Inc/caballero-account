@@ -1,15 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import AWS from 'aws-sdk';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
-AWS.config.update({
+const documentClient = new DocumentClient({
     region: process.env.REGION as string,
     accessKeyId: process.env.AccessKeyID as string,
     secretAccessKey: process.env.SecretAccessKey as string
 });
-
-let documentClient = new AWS.DynamoDB.DocumentClient();
 
 const TABLE_NAME_USER = "users-caballero";
 
