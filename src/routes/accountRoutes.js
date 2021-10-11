@@ -41,12 +41,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 //import { sendEmail } from "../channels/email";
-//import { putUser } from "../db/awsDynamoDB";
+var awsDynamoDB_1 = require("../db/awsDynamoDB");
 var cryptoTools_1 = require("../helpers/cryptoTools");
 var languageTools_1 = require("../helpers/languageTools");
 var router = express_1.default.Router();
 router.get('/account/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, lang, id;
+    var email, lang, id, from, subject, body, html;
     return __generator(this, function (_a) {
         email = req.query.email;
         lang = req.query.lang;
@@ -61,21 +61,19 @@ router.get('/account/register', function (req, res) { return __awaiter(void 0, v
         }
         else {
             id = (0, cryptoTools_1.makeId)(50);
-            /*
-            putUser({ email, id, credits: 0 });
-            const from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
-            const subject = `${l({
+            (0, awsDynamoDB_1.putUser)({ email: email, id: id, credits: 0 });
+            from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
+            subject = (0, languageTools_1.l)({
                 "en": "Identifier",
                 "fr": "Identifiant"
-            }, lang)} (Caballero Software Inc.)`;
-            const body = l({
+            }, lang) + " (Caballero Software Inc.)";
+            body = (0, languageTools_1.l)({
                 "en": "Your identifier for Caballero Software Inc. is: ",
                 "fr": "Votre identifiant pour Caballero Software Inc. est : "
             }, lang)
                 + id;
-            const html = "<b>" + body + "</b>";
-            sendEmail(from, email, subject, body, html);
-            */
+            html = "<b>" + body + "</b>";
+            //sendEmail(from, email, subject, body, html);
             res.json({ ok: true, id: id });
         }
         return [2 /*return*/];
