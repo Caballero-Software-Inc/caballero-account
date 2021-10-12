@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePreUser = exports.validUser = exports.validPreUser = exports.inexistingPreUser = exports.inexistingUser = exports.putUser = exports.putPreUser = void 0;
+exports.deleteUser = exports.deletePreUser = exports.validUser = exports.validPreUser = exports.getCredits = exports.inexistingPreUser = exports.inexistingUser = exports.putUser = exports.putPreUser = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var dynamodb_1 = require("aws-sdk/clients/dynamodb");
@@ -166,6 +166,32 @@ function getUser(email, id) {
         });
     });
 }
+function getCredits(email, id) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+        var params, myData;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    params = {
+                        TableName: TABLE_NAME_USER,
+                        Key: {
+                            id: id,
+                            email: email
+                        }
+                    };
+                    return [4 /*yield*/, documentClient.get(params, function (err, data) {
+                            if (err)
+                                console.log(err);
+                        }).promise()];
+                case 1:
+                    myData = _b.sent();
+                    return [2 /*return*/, (_a = myData === null || myData === void 0 ? void 0 : myData.Item) === null || _a === void 0 ? void 0 : _a.credits];
+            }
+        });
+    });
+}
+exports.getCredits = getCredits;
 function validPreUser(email, id) {
     return __awaiter(this, void 0, void 0, function () {
         var myData;
@@ -211,3 +237,14 @@ function deletePreUser(email, id) {
     documentClient.delete(params).promise();
 }
 exports.deletePreUser = deletePreUser;
+function deleteUser(email, id) {
+    var params = {
+        TableName: TABLE_NAME_USER,
+        Key: {
+            id: id,
+            email: email
+        }
+    };
+    documentClient.delete(params).promise();
+}
+exports.deleteUser = deleteUser;

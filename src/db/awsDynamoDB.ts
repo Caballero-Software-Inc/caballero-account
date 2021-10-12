@@ -92,6 +92,20 @@ async function getUser(email: string, id: string): Promise<any> {
     return myData;
 }
 
+export async function getCredits(email: string, id: string): Promise<number> {
+    const params = {
+        TableName: TABLE_NAME_USER,
+        Key: {
+            id, email
+        }
+    };
+    const myData = await documentClient.get(params, function (err: any, data: any): void {
+        if (err)
+            console.log(err);
+    }).promise();
+    return myData?.Item?.credits
+}
+
 export async function validPreUser(email: string, id: string): Promise<boolean> {
     if ((email === '') || (id === '')) {
         return false;
@@ -119,3 +133,14 @@ export function deletePreUser(email: string, id: string): void {
     };
     documentClient.delete(params).promise();
 }
+
+export function deleteUser(email: string, id: string): void {
+    const params = {
+        TableName: TABLE_NAME_USER,
+        Key: {
+            id, email
+        }
+    };
+    documentClient.delete(params).promise(); 
+}
+

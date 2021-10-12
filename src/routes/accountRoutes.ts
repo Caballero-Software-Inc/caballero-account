@@ -3,7 +3,7 @@
 import express from "express";
 
 import { sendEmail } from "../channels/email";
-import { putPreUser, inexistingUser, inexistingPreUser, validPreUser, putUser, deletePreUser, validUser } from "../db/awsDynamoDB";
+import { putPreUser, inexistingUser, inexistingPreUser, validPreUser, putUser, deletePreUser, validUser, deleteUser, getCredits } from "../db/awsDynamoDB";
 import { makeId } from "../helpers/cryptoTools";
 import { l } from "../helpers/languageTools";
 
@@ -55,8 +55,7 @@ router.get('/account/preregister', async function (req: any, res: any): Promise<
                             putPreUser({ email, id, date: Date.now });
                             res.json({ ok: true })
                         }
-                    });
-                
+                    })
             } else {
                 res.json({
                     ok: false,
@@ -86,13 +85,13 @@ router.get('/account/signin', async function (req: any, res: any): Promise<void>
     const isValidUser = await validUser(email, id);
 
     if (isValidUser) {
-        res.json({ ok: true })
+        res.json({ ok: true, new: false })
     } else {
         const isValidPreUser = await validPreUser(email, id);
         if (isValidPreUser) {
             putUser({ email, id, credits: 0 });
             deletePreUser(email, id);
-            res.json({ ok: true })
+            res.json({ ok: true, new: true })
         } else {
             res.json({
                 ok: false,
@@ -104,5 +103,22 @@ router.get('/account/signin', async function (req: any, res: any): Promise<void>
         }
     }
 })
+
+router.get('/account/del', async function (req: any, res: any): Promise<void> {
+    const email = req.query.email;
+    const id = req.query.id;
+
+    deleteUser(email, id);
+    res.json({ ok: true })
+})
+
+router.get('/account/credits', async function (req: any, res: any): Promise<void> {
+    const email = req.query.email;
+    const id = req.query.id;
+
+    const credits = await getCredits(email, id);
+    res.json({ credits })
+})
+
 
 export default router;

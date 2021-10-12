@@ -140,7 +140,7 @@ router.get('/account/signin', function (req, res) {
                 case 1:
                     isValidUser = _a.sent();
                     if (!isValidUser) return [3 /*break*/, 2];
-                    res.json({ ok: true });
+                    res.json({ ok: true, new: false });
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, (0, awsDynamoDB_1.validPreUser)(email, id)];
                 case 3:
@@ -148,7 +148,7 @@ router.get('/account/signin', function (req, res) {
                     if (isValidPreUser) {
                         (0, awsDynamoDB_1.putUser)({ email: email, id: id, credits: 0 });
                         (0, awsDynamoDB_1.deletePreUser)(email, id);
-                        res.json({ ok: true });
+                        res.json({ ok: true, new: true });
                     }
                     else {
                         res.json({
@@ -161,6 +161,35 @@ router.get('/account/signin', function (req, res) {
                     }
                     _a.label = 4;
                 case 4: return [2 /*return*/];
+            }
+        });
+    });
+});
+router.get('/account/del', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var email, id;
+        return __generator(this, function (_a) {
+            email = req.query.email;
+            id = req.query.id;
+            (0, awsDynamoDB_1.deleteUser)(email, id);
+            res.json({ ok: true });
+            return [2 /*return*/];
+        });
+    });
+});
+router.get('/account/credits', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var email, id, credits;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    email = req.query.email;
+                    id = req.query.id;
+                    return [4 /*yield*/, (0, awsDynamoDB_1.getCredits)(email, id)];
+                case 1:
+                    credits = _a.sent();
+                    res.json({ credits: credits });
+                    return [2 /*return*/];
             }
         });
     });
