@@ -45,38 +45,124 @@ var awsDynamoDB_1 = require("../db/awsDynamoDB");
 var cryptoTools_1 = require("../helpers/cryptoTools");
 var languageTools_1 = require("../helpers/languageTools");
 var router = express_1.default.Router();
-router.get('/account/register', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, lang, id, from, subject, body, html;
-    return __generator(this, function (_a) {
-        email = req.query.email;
-        lang = req.query.lang;
-        if (email === '') {
-            res.json({
-                ok: false,
-                error: (0, languageTools_1.l)({
-                    "en": "You must write your email address.",
-                    "fr": "Vous devez écrire votre adresse électronique."
-                }, lang)
-            });
-        }
-        else {
-            id = (0, cryptoTools_1.makeId)(50);
-            (0, awsDynamoDB_1.putUser)({ email: email, id: id, credits: 0 });
-            from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
-            subject = (0, languageTools_1.l)({
-                "en": "Identifier",
-                "fr": "Identifiant"
-            }, lang) + " (Caballero Software Inc.)";
-            body = (0, languageTools_1.l)({
-                "en": "Your identifier for Caballero Software Inc. is: ",
-                "fr": "Votre identifiant pour Caballero Software Inc. est : "
-            }, lang)
-                + id;
-            html = "<b>" + body + "</b>";
-            (0, email_1.sendEmail)(from, email, subject, body, html);
-            res.json({ ok: true });
-        }
-        return [2 /*return*/];
+//Before registration, it is important to check that the user has access to this email
+router.get('/account/preregister', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var email, lang, isInexistingPreUser, isInexistingUser, id_1, from, subject, body, html, error;
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    email = req.query.email;
+                    lang = req.query.lang;
+                    if (!(email === '')) return [3 /*break*/, 1];
+                    res.json({
+                        ok: false,
+                        error: (0, languageTools_1.l)({
+                            "en": "You must write your email address.",
+                            "fr": "Vous devez écrire votre adresse électronique."
+                        }, lang)
+                    });
+                    return [3 /*break*/, 5];
+                case 1: return [4 /*yield*/, (0, awsDynamoDB_1.inexistingPreUser)(email)];
+                case 2:
+                    isInexistingPreUser = _a.sent();
+                    if (!isInexistingPreUser) return [3 /*break*/, 4];
+                    return [4 /*yield*/, (0, awsDynamoDB_1.inexistingUser)(email)];
+                case 3:
+                    isInexistingUser = _a.sent();
+                    if (isInexistingUser) {
+                        id_1 = (0, cryptoTools_1.makeId)(50);
+                        from = '"Caballero Software Inc." <caballerosoftwareinc@gmail.com>';
+                        subject = (0, languageTools_1.l)({
+                            "en": "Identifier",
+                            "fr": "Identifiant"
+                        }, lang) + " (Caballero Software Inc.)";
+                        body = (0, languageTools_1.l)({
+                            "en": "Your identifier for Caballero Software Inc. is: ",
+                            "fr": "Votre identifiant pour Caballero Software Inc. est : "
+                        }, lang)
+                            + id_1;
+                        html = "<p>" + body + "</p>";
+                        error = (0, email_1.sendEmail)(from, email, subject, body, html, function (error, result) { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                if (error) {
+                                    res.json({
+                                        ok: false,
+                                        error: (0, languageTools_1.l)({
+                                            "en": "Unable to send an email to: " + email,
+                                            "fr": "Impossible d'envoyer un courriel à : " + email
+                                        }, lang)
+                                    });
+                                }
+                                else {
+                                    (0, awsDynamoDB_1.putPreUser)({ email: email, id: id_1, date: Date.now });
+                                    res.json({ ok: true });
+                                }
+                                return [2 /*return*/];
+                            });
+                        }); });
+                    }
+                    else {
+                        res.json({
+                            ok: false,
+                            error: (0, languageTools_1.l)({
+                                "en": "This email address already exists.",
+                                "fr": "Cette adresse électronique existe déja."
+                            }, lang)
+                        });
+                    }
+                    return [3 /*break*/, 5];
+                case 4:
+                    res.json({
+                        ok: false,
+                        error: (0, languageTools_1.l)({
+                            "en": "An email with the identifier has already been sent to this email address. If there is any problem. Do not hesitate to contact Caballero Software directly.",
+                            "fr": "Un courrier électronique avec l'identifiant a déjà été envoyé à cette adresse e-mail. S'il y a un problème. N'hésitez pas à contacter directement Caballero Software."
+                        }, lang)
+                    });
+                    _a.label = 5;
+                case 5: return [2 /*return*/];
+            }
+        });
     });
-}); });
+});
+router.get('/account/signin', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var email, id, lang, isValidUser, isValidPreUser;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    email = req.query.email;
+                    id = req.query.id;
+                    lang = req.query.lang;
+                    return [4 /*yield*/, (0, awsDynamoDB_1.validUser)(email, id)];
+                case 1:
+                    isValidUser = _a.sent();
+                    if (!isValidUser) return [3 /*break*/, 2];
+                    res.json({ ok: true });
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, (0, awsDynamoDB_1.validPreUser)(email, id)];
+                case 3:
+                    isValidPreUser = _a.sent();
+                    if (isValidPreUser) {
+                        (0, awsDynamoDB_1.putUser)({ email: email, id: id, credits: 0 });
+                        (0, awsDynamoDB_1.deletePreUser)(email, id);
+                        res.json({ ok: true });
+                    }
+                    else {
+                        res.json({
+                            ok: false,
+                            error: (0, languageTools_1.l)({
+                                "en": "The identifier provided does not correspond to any previously registered user.",
+                                "fr": "L'identifiant fourni ne correspond à aucun utilisateur préalablement enregistré."
+                            }, lang)
+                        });
+                    }
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+});
 exports.default = router;

@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putUser = void 0;
+exports.deletePreUser = exports.validUser = exports.validPreUser = exports.inexistingPreUser = exports.inexistingUser = exports.putUser = exports.putPreUser = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var dynamodb_1 = require("aws-sdk/clients/dynamodb");
@@ -48,23 +48,166 @@ var documentClient = new dynamodb_1.DocumentClient({
     accessKeyId: process.env.AccessKeyID,
     secretAccessKey: process.env.SecretAccessKey
 });
+var TABLE_NAME_PRE_USER = "pre-users-caballero";
 var TABLE_NAME_USER = "users-caballero";
+function putPreUser(preUser) {
+    var params = {
+        TableName: TABLE_NAME_PRE_USER,
+        Item: preUser
+    };
+    documentClient.put(params).promise();
+}
+exports.putPreUser = putPreUser;
 function putUser(user) {
+    var params = {
+        TableName: TABLE_NAME_USER,
+        Item: user
+    };
+    documentClient.put(params).promise();
+}
+exports.putUser = putUser;
+function inexistingUser(email) {
     return __awaiter(this, void 0, void 0, function () {
-        var params;
+        var params, myData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = {
+                        ExpressionAttributeNames: {
+                            "#E": "email"
+                        },
+                        ExpressionAttributeValues: {
+                            ":a": email
+                        },
+                        FilterExpression: "#E = :a",
+                        ProjectionExpression: "#E",
+                        TableName: TABLE_NAME_USER
+                    };
+                    return [4 /*yield*/, documentClient.scan(params).promise()];
+                case 1:
+                    myData = _a.sent();
+                    return [2 /*return*/, myData["Count"] === 0];
+            }
+        });
+    });
+}
+exports.inexistingUser = inexistingUser;
+function inexistingPreUser(email) {
+    return __awaiter(this, void 0, void 0, function () {
+        var params, myData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = {
+                        ExpressionAttributeNames: {
+                            "#E": "email"
+                        },
+                        ExpressionAttributeValues: {
+                            ":a": email
+                        },
+                        FilterExpression: "#E = :a",
+                        ProjectionExpression: "#E",
+                        TableName: TABLE_NAME_PRE_USER
+                    };
+                    return [4 /*yield*/, documentClient.scan(params).promise()];
+                case 1:
+                    myData = _a.sent();
+                    return [2 /*return*/, myData["Count"] === 0];
+            }
+        });
+    });
+}
+exports.inexistingPreUser = inexistingPreUser;
+function getPreUser(email, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var params, myData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = {
+                        TableName: TABLE_NAME_PRE_USER,
+                        Key: {
+                            id: id,
+                            email: email
+                        }
+                    };
+                    return [4 /*yield*/, documentClient.get(params, function (err, data) {
+                            if (err)
+                                console.log(err);
+                        }).promise()];
+                case 1:
+                    myData = _a.sent();
+                    return [2 /*return*/, myData];
+            }
+        });
+    });
+}
+function getUser(email, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var params, myData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     params = {
                         TableName: TABLE_NAME_USER,
-                        Item: user
+                        Key: {
+                            id: id,
+                            email: email
+                        }
                     };
-                    return [4 /*yield*/, documentClient.put(params).promise()];
+                    return [4 /*yield*/, documentClient.get(params, function (err, data) {
+                            if (err)
+                                console.log(err);
+                        }).promise()];
                 case 1:
-                    _a.sent();
-                    return [2 /*return*/];
+                    myData = _a.sent();
+                    return [2 /*return*/, myData];
             }
         });
     });
 }
-exports.putUser = putUser;
+function validPreUser(email, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var myData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!((email === '') || (id === ''))) return [3 /*break*/, 1];
+                    return [2 /*return*/, false];
+                case 1: return [4 /*yield*/, getPreUser(email, id)];
+                case 2:
+                    myData = _a.sent();
+                    return [2 /*return*/, (Object.keys(myData).length !== 0)];
+            }
+        });
+    });
+}
+exports.validPreUser = validPreUser;
+function validUser(email, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var myData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!((email === '') || (id === ''))) return [3 /*break*/, 1];
+                    return [2 /*return*/, false];
+                case 1: return [4 /*yield*/, getUser(email, id)];
+                case 2:
+                    myData = _a.sent();
+                    return [2 /*return*/, (Object.keys(myData).length !== 0)];
+            }
+        });
+    });
+}
+exports.validUser = validUser;
+function deletePreUser(email, id) {
+    var params = {
+        TableName: TABLE_NAME_PRE_USER,
+        Key: {
+            id: id,
+            email: email
+        }
+    };
+    documentClient.delete(params).promise();
+}
+exports.deletePreUser = deletePreUser;
