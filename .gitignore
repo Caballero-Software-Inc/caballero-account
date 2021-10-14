@@ -106,3 +106,4 @@ dist
 # Mac
 .DS_Store
 
+*.icloud
