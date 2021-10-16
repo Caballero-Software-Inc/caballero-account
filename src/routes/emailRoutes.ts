@@ -5,7 +5,8 @@ dotenv.config();
 
 
 import express from "express";
-import { putEmail, validUser } from '../db/awsDynamoDB';
+import { sendEmail } from '../channels/email';
+import { getEmailData, putEmail, validUser } from '../db/awsDynamoDB';
 //import { uploadEmail } from '../db/awsS3';
 import { makeId } from '../helpers/cryptoTools';
 
@@ -37,7 +38,7 @@ router.post('/email/new', async function (req: any, res: any): Promise<void> {
 })
 
 
-/*
+
 
 router.post('/email/send', async function (req: any, res: any): Promise<void> {
     const { email, id, emailCode } = req.body;
@@ -46,6 +47,26 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
 
     const { from, subject, emailSender } = await getEmailData(emailId, emailDate);
 
+
+    
+    const error = sendEmail(
+        from,
+        email,
+        subject,
+        '',//text
+        'Hi',
+        async (error, result): Promise<void> => {
+            if (error) {
+                res.json({
+                    ok: false
+                })
+            } else {
+                res.json({ ok: true })
+            }
+        })
+
+
+    /*
     downloadEmail(emailCode + '.html', async function (html: string): Promise<void> {
         const key: string = process.env.SecretAccessKey as string;
         const { iv, ciphertext } = await encode(key, email);
@@ -67,9 +88,12 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
                 }
             })
     })
-})
 
 */
+
+})
+
+
 
 
 

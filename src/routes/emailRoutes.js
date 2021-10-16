@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var express_1 = __importDefault(require("express"));
+var email_1 = require("../channels/email");
 var awsDynamoDB_1 = require("../db/awsDynamoDB");
 //import { uploadEmail } from '../db/awsS3';
 var cryptoTools_1 = require("../helpers/cryptoTools");
@@ -77,37 +78,36 @@ router.post('/email/new', function (req, res) {
         });
     });
 });
-/*
-
-router.post('/email/send', async function (req: any, res: any): Promise<void> {
-    const { email, id, emailCode } = req.body;
-    const emailId = emailCode.substring(0, 10);
-    const emailDate = parseInt(emailCode.substring(10, emailCode.length));
-
-    const { from, subject, emailSender } = await getEmailData(emailId, emailDate);
-
-    downloadEmail(emailCode + '.html', async function (html: string): Promise<void> {
-        const key: string = process.env.SecretAccessKey as string;
-        const { iv, ciphertext } = await encode(key, email);
-        const htmlMarked = html + "<p>Sender tracker: iv=" + iv + ', ciphertext=' + ciphertext + ", cipher=aes256</p>";
-
-        const error = sendEmail(
-            from,
-            email,
-            subject,
-            '',//text
-            htmlMarked,
-            async (error, result): Promise<void> => {
-                if (error) {
-                    res.json({
-                        ok: false
-                    })
-                } else {
-                    res.json({ ok: true })
-                }
-            })
-    })
-})
-
-*/
+router.post('/email/send', function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, email, id, emailCode, emailId, emailDate, _b, from, subject, emailSender, error;
+        var _this = this;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = req.body, email = _a.email, id = _a.id, emailCode = _a.emailCode;
+                    emailId = emailCode.substring(0, 10);
+                    emailDate = parseInt(emailCode.substring(10, emailCode.length));
+                    return [4 /*yield*/, (0, awsDynamoDB_1.getEmailData)(emailId, emailDate)];
+                case 1:
+                    _b = _c.sent(), from = _b.from, subject = _b.subject, emailSender = _b.emailSender;
+                    error = (0, email_1.sendEmail)(from, email, subject, '', //text
+                    'Hi', function (error, result) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            if (error) {
+                                res.json({
+                                    ok: false
+                                });
+                            }
+                            else {
+                                res.json({ ok: true });
+                            }
+                            return [2 /*return*/];
+                        });
+                    }); });
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
 exports.default = router;
