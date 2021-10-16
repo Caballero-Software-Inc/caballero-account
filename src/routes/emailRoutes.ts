@@ -5,12 +5,13 @@ dotenv.config();
 
 
 import express from "express";
+import { putEmail, validUser } from '../db/awsDynamoDB';
+import { uploadEmail } from '../db/awsS3';
+import { makeId } from '../helpers/cryptoTools';
 
 
 const router = express.Router();
 
-
-/*
 
 router.post('/email/new', async function (req: any, res: any): Promise<void> {
     const { email, id, from, subject, html } = req.body;
