@@ -20,6 +20,6 @@ app.listen(PORT, () => console.log(`Listening to ${PORT}`));
 app.disable('etag');//to guarantee that res.statusCode = 200, unless there is an error
 
 app.use(accountRoutes);
-app.use(emailRoutes);
+//app.use(emailRoutes);
 
 
