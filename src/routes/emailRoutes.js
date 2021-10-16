@@ -44,7 +44,7 @@ dotenv_1.default.config();
 var express_1 = __importDefault(require("express"));
 var email_1 = require("../channels/email");
 var awsDynamoDB_1 = require("../db/awsDynamoDB");
-//import { uploadEmail } from '../db/awsS3';
+var awsS3_1 = require("../db/awsS3");
 var cryptoTools_1 = require("../helpers/cryptoTools");
 var router = express_1.default.Router();
 router.post('/email/new', function (req, res) {
@@ -62,12 +62,10 @@ router.post('/email/new', function (req, res) {
                         emailDate = Date.now();
                         emailCode = emailId + String(emailDate);
                         (0, awsDynamoDB_1.putEmail)({ id: emailId, date: emailDate, email: email, from: from, subject: subject });
-                        /*
-                        uploadEmail({
+                        (0, awsS3_1.uploadEmail)({
                             name: emailCode + '.html',
                             body: html
                         });
-                        */
                         res.json({ ok: true, emailCode: emailCode });
                     }
                     else {

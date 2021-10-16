@@ -3,22 +3,18 @@ dotenv.config();
 
 const BUCKET_NAME_EMAILS = 'emails-caballero';
 
-import AWS from 'aws-sdk';
+import S3 from 'aws-sdk/clients/s3';
 
-AWS.config.update({
+
+const s3 = new S3({
     region: process.env.REGION,
-    accessKeyId: process.env.AccessKeyID,
-    secretAccessKey: process.env.SecretAccessKey
-});
-
-const s3 = new AWS.S3({
     accessKeyId: process.env.AccessKeyID,
     secretAccessKey: process.env.SecretAccessKey
 });
 
 
 export function uploadEmail({ name, body }:
-    { name: string; body: string; }): void {
+    { name: string; body: string }): void {
     const params = {
         Bucket: BUCKET_NAME_EMAILS,
         Key: name,

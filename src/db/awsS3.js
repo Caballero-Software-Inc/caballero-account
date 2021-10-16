@@ -7,13 +7,9 @@ exports.uploadEmail = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var BUCKET_NAME_EMAILS = 'emails-caballero';
-var aws_sdk_1 = __importDefault(require("aws-sdk"));
-aws_sdk_1.default.config.update({
+var s3_1 = __importDefault(require("aws-sdk/clients/s3"));
+var s3 = new s3_1.default({
     region: process.env.REGION,
-    accessKeyId: process.env.AccessKeyID,
-    secretAccessKey: process.env.SecretAccessKey
-});
-var s3 = new aws_sdk_1.default.S3({
     accessKeyId: process.env.AccessKeyID,
     secretAccessKey: process.env.SecretAccessKey
 });
