@@ -1,10 +1,9 @@
-/*
 'use strict';
 
 import express from "express";
 import { sendEmail } from "../channels/email";
 import { getEmailData, putEmail, validUser } from "../db/awsDynamoDB";
-import { encode, makeId } from "../helpers/cryptoTools";
+import { /*encode,*/ makeId } from "../helpers/cryptoTools";
 
 import dotenv from 'dotenv';
 import { downloadEmail, uploadEmail } from "../db/awsS3";
@@ -32,6 +31,9 @@ router.post('/email/new', async function (req: any, res: any): Promise<void> {
         res.json({ ok: false })
     }
 })
+
+
+/*
 
 router.post('/email/send', async function (req: any, res: any): Promise<void> {
     const { email, id, emailCode } = req.body;
@@ -63,7 +65,9 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
     })
 })
 
+*/
+
+
 
 export default router;
 
-*/
