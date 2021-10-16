@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 import dotenv from 'dotenv';
@@ -65,9 +66,10 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
     })
 })
 
-*/
+
 
 
 
 export default router;
 
+*/
