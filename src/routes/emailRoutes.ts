@@ -1,4 +1,3 @@
-/*
 'use strict';
 
 import dotenv from 'dotenv';
@@ -6,11 +5,12 @@ dotenv.config();
 
 
 import express from "express";
-import { putEmail, validUser } from "../db/awsDynamoDB";
-import { makeId } from "../helpers/cryptoTools";
-import { uploadEmail } from "../db/awsS3";
+
 
 const router = express.Router();
+
+
+/*
 
 router.post('/email/new', async function (req: any, res: any): Promise<void> {
     const { email, id, from, subject, html } = req.body;
@@ -66,10 +66,9 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
     })
 })
 
-
+*/
 
 
 
 export default router;
 
-*/

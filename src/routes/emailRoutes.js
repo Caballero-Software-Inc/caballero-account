@@ -1,17 +1,13 @@
-"use strict";
-/*
 'use strict';
-
-import dotenv from 'dotenv';
-dotenv.config();
-
-
-import express from "express";
-import { putEmail, validUser } from "../db/awsDynamoDB";
-import { makeId } from "../helpers/cryptoTools";
-import { uploadEmail } from "../db/awsS3";
-
-const router = express.Router();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+var express_1 = __importDefault(require("express"));
+var router = express_1.default.Router();
+/*
 
 router.post('/email/new', async function (req: any, res: any): Promise<void> {
     const { email, id, from, subject, html } = req.body;
@@ -67,10 +63,5 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
     })
 })
 
-
-
-
-
-export default router;
-
-*/ 
+*/
+exports.default = router;
