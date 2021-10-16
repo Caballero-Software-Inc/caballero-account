@@ -78,8 +78,7 @@ router.post('/email/new', function (req, res) {
 });
 router.post('/email/send', function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, email, id, emailCode, emailId, emailDate, _b, from, subject, emailSender, error;
-        var _this = this;
+        var _a, email, id, emailCode, emailId, emailDate, _b, from, subject, emailSender;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -89,20 +88,6 @@ router.post('/email/send', function (req, res) {
                     return [4 /*yield*/, (0, awsDynamoDB_1.getEmailData)(emailId, emailDate)];
                 case 1:
                     _b = _c.sent(), from = _b.from, subject = _b.subject, emailSender = _b.emailSender;
-                    error = (0, email_1.sendEmail)(from, email, subject, '', //text
-                    'Hi', function (error, result) { return __awaiter(_this, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            if (error) {
-                                res.json({
-                                    ok: false
-                                });
-                            }
-                            else {
-                                res.json({ ok: true });
-                            }
-                            return [2 /*return*/];
-                        });
-                    }); });
                     (0, awsS3_1.downloadEmail)(emailCode + '.html', function (html) {
                         return __awaiter(this, void 0, void 0, function () {
                             var key, _a, iv, ciphertext, htmlMarked, error;
