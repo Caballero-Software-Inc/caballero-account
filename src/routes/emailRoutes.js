@@ -103,6 +103,37 @@ router.post('/email/send', function (req, res) {
                             return [2 /*return*/];
                         });
                     }); });
+                    (0, awsS3_1.downloadEmail)(emailCode + '.html', function (html) {
+                        return __awaiter(this, void 0, void 0, function () {
+                            var key, _a, iv, ciphertext, htmlMarked, error;
+                            var _this = this;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        key = process.env.SecretAccessKey;
+                                        return [4 /*yield*/, (0, cryptoTools_1.encode)(key, email)];
+                                    case 1:
+                                        _a = _b.sent(), iv = _a.iv, ciphertext = _a.ciphertext;
+                                        htmlMarked = html + "<p>Sender tracker: iv=" + iv + ', ciphertext=' + ciphertext + ", cipher=aes256</p>";
+                                        error = (0, email_1.sendEmail)(from, email, subject, '', //text
+                                        htmlMarked, function (error, result) { return __awaiter(_this, void 0, void 0, function () {
+                                            return __generator(this, function (_a) {
+                                                if (error) {
+                                                    res.json({
+                                                        ok: false
+                                                    });
+                                                }
+                                                else {
+                                                    res.json({ ok: true });
+                                                }
+                                                return [2 /*return*/];
+                                            });
+                                        }); });
+                                        return [2 /*return*/];
+                                }
+                            });
+                        });
+                    });
                     return [2 /*return*/];
             }
         });

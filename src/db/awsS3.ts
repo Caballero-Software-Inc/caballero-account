@@ -30,8 +30,6 @@ export function uploadEmail({ name, body }:
 }
 
 
-/*
-
 export async function downloadEmail(name: any, code: (arg0: string) => void): Promise<void> {
     const params = {
         Bucket: BUCKET_NAME_EMAILS,
@@ -45,4 +43,3 @@ export async function downloadEmail(name: any, code: (arg0: string) => void): Pr
     });
 }
 
-*/
