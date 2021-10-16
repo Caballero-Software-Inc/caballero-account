@@ -1,13 +1,13 @@
 'use strict';
 
-import express from "express";
-import { sendEmail } from "../channels/email";
-import { getEmailData, putEmail, validUser } from "../db/awsDynamoDB";
-import { /*encode,*/ makeId } from "../helpers/cryptoTools";
-
 import dotenv from 'dotenv';
-import { downloadEmail, uploadEmail } from "../db/awsS3";
 dotenv.config();
+
+
+import express from "express";
+import { putEmail, validUser } from "../db/awsDynamoDB";
+import { makeId } from "../helpers/cryptoTools";
+import { uploadEmail } from "../db/awsS3";
 
 const router = express.Router();
 

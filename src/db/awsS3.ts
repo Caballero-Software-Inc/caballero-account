@@ -34,6 +34,7 @@ export function uploadEmail({ name, body }:
 }
 
 
+/*
 
 export async function downloadEmail(name: any, code: (arg0: string) => void): Promise<void> {
     const params = {
@@ -47,3 +48,5 @@ export async function downloadEmail(name: any, code: (arg0: string) => void): Pr
         code(data.Body!.toString('utf-8'));
     });
 }
+
+*/
