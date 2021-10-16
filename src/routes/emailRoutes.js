@@ -43,7 +43,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var express_1 = __importDefault(require("express"));
 var awsDynamoDB_1 = require("../db/awsDynamoDB");
-var awsS3_1 = require("../db/awsS3");
+//import { uploadEmail } from '../db/awsS3';
 var cryptoTools_1 = require("../helpers/cryptoTools");
 var router = express_1.default.Router();
 router.post('/email/new', function (req, res) {
@@ -61,10 +61,12 @@ router.post('/email/new', function (req, res) {
                         emailDate = Date.now();
                         emailCode = emailId + String(emailDate);
                         (0, awsDynamoDB_1.putEmail)({ id: emailId, date: emailDate, email: email, from: from, subject: subject });
-                        (0, awsS3_1.uploadEmail)({
+                        /*
+                        uploadEmail({
                             name: emailCode + '.html',
                             body: html
                         });
+                        */
                         res.json({ ok: true, emailCode: emailCode });
                     }
                     else {

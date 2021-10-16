@@ -6,7 +6,7 @@ dotenv.config();
 
 import express from "express";
 import { putEmail, validUser } from '../db/awsDynamoDB';
-import { uploadEmail } from '../db/awsS3';
+//import { uploadEmail } from '../db/awsS3';
 import { makeId } from '../helpers/cryptoTools';
 
 
@@ -24,10 +24,12 @@ router.post('/email/new', async function (req: any, res: any): Promise<void> {
 
         putEmail({ id: emailId, date: emailDate, email, from, subject });
 
+        /*
         uploadEmail({
             name: emailCode + '.html',
             body: html
         });
+        */
         res.json({ ok: true, emailCode })
     } else {
         res.json({ ok: false })
