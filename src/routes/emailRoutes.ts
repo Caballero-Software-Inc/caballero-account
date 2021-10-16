@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 import express from "express";
@@ -65,3 +66,4 @@ router.post('/email/send', async function (req: any, res: any): Promise<void> {
 
 export default router;
 
+*/

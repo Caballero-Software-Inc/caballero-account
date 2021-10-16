@@ -8,6 +8,7 @@ export function makeId(length: number): string {
     return result;
 }
 
+/*
 export async function hash(s: string): Promise<string> {
     const {
         createHash
@@ -18,8 +19,9 @@ export async function hash(s: string): Promise<string> {
 
     return hash.digest('hex');
 }
+*/
 
-
+/*
 export async function encode(key: string, text: string): Promise<{ iv: string; ciphertext: string; }> {
     const {
         createCipheriv, randomBytes, createHash
@@ -32,6 +34,7 @@ export async function encode(key: string, text: string): Promise<{ iv: string; c
     encrypted = Buffer.concat([encrypted, cipher.final()]);
     return { iv: iv.toString('base64'), ciphertext: encrypted.toString('base64') };
 }
+*/
 
 /*
 const decode = async (key, ciphertextBase64, ivBase64) => {

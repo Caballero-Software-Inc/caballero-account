@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from "cors";
 import accountRoutes from './routes/accountRoutes';
-import emailRoutes from './routes/emailRoutes';
+//import emailRoutes from './routes/emailRoutes';
 
 const app = express();
 app.use(
