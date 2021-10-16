@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.deletePreUser = exports.validUser = exports.validPreUser = exports.getCredits = exports.inexistingPreUser = exports.inexistingUser = exports.putUser = exports.putPreUser = void 0;
+exports.getEmailData = exports.deleteUser = exports.deletePreUser = exports.validUser = exports.validPreUser = exports.getCredits = exports.inexistingPreUser = exports.inexistingUser = exports.putEmail = exports.putUser = exports.putPreUser = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 var dynamodb_1 = require("aws-sdk/clients/dynamodb");
@@ -50,6 +50,7 @@ var documentClient = new dynamodb_1.DocumentClient({
 });
 var TABLE_NAME_PRE_USER = "pre-users-caballero";
 var TABLE_NAME_USER = "users-caballero";
+var TABLE_NAME_EMAIL = "emails-caballero";
 function putPreUser(preUser) {
     var params = {
         TableName: TABLE_NAME_PRE_USER,
@@ -66,6 +67,14 @@ function putUser(user) {
     documentClient.put(params).promise();
 }
 exports.putUser = putUser;
+function putEmail(user) {
+    var params = {
+        TableName: TABLE_NAME_EMAIL,
+        Item: user
+    };
+    documentClient.put(params).promise();
+}
+exports.putEmail = putEmail;
 function inexistingUser(email) {
     return __awaiter(this, void 0, void 0, function () {
         var params, myData;
@@ -248,3 +257,33 @@ function deleteUser(email, id) {
     documentClient.delete(params).promise();
 }
 exports.deleteUser = deleteUser;
+function getEmailData(id, date) {
+    var _a, _b, _c;
+    return __awaiter(this, void 0, void 0, function () {
+        var params, myData;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    params = {
+                        TableName: TABLE_NAME_EMAIL,
+                        Key: {
+                            id: id,
+                            date: date
+                        }
+                    };
+                    return [4 /*yield*/, documentClient.get(params, function (err, data) {
+                            if (err)
+                                console.log(err);
+                        }).promise()];
+                case 1:
+                    myData = _d.sent();
+                    return [2 /*return*/, {
+                            from: (_a = myData === null || myData === void 0 ? void 0 : myData.Item) === null || _a === void 0 ? void 0 : _a.from,
+                            subject: (_b = myData === null || myData === void 0 ? void 0 : myData.Item) === null || _b === void 0 ? void 0 : _b.subject,
+                            emailSender: (_c = myData === null || myData === void 0 ? void 0 : myData.Item) === null || _c === void 0 ? void 0 : _c.email
+                        }];
+            }
+        });
+    });
+}
+exports.getEmailData = getEmailData;

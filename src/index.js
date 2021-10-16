@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var accountRoutes_1 = __importDefault(require("./routes/accountRoutes"));
+var emailRoutes_1 = __importDefault(require("./routes/emailRoutes"));
 var app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: '*'
@@ -16,3 +17,4 @@ var PORT = process.env.PORT || 8080;
 app.listen(PORT, function () { return console.log("Listening to " + PORT); });
 app.disable('etag'); //to guarantee that res.statusCode = 200, unless there is an error
 app.use(accountRoutes_1.default);
+app.use(emailRoutes_1.default);

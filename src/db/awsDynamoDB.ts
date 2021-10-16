@@ -10,8 +10,8 @@ const documentClient = new DocumentClient({
 });
 
 const TABLE_NAME_PRE_USER = "pre-users-caballero";
-
 const TABLE_NAME_USER = "users-caballero";
+const TABLE_NAME_EMAIL = "emails-caballero";
 
 export function putPreUser(preUser: any): void {
     const params = {
@@ -30,6 +30,13 @@ export function putUser(user: any): void {
     documentClient.put(params).promise();
 }
 
+export function putEmail(user: any): void {
+    const params = {
+        TableName: TABLE_NAME_EMAIL,
+        Item: user
+    };
+    documentClient.put(params).promise();
+}
 
 export async function inexistingUser(email: string): Promise<boolean> {
     const params = {
@@ -144,3 +151,21 @@ export function deleteUser(email: string, id: string): void {
     documentClient.delete(params).promise(); 
 }
 
+
+export async function getEmailData(id: string, date: number): Promise<any> {
+    const params = {
+        TableName: TABLE_NAME_EMAIL,
+        Key: {
+            id, date 
+        }
+    };
+    const myData = await documentClient.get(params, function (err: any, data: any): void {
+        if (err)
+            console.log(err);
+    }).promise();
+    return {
+        from: myData?.Item?.from,
+        subject: myData?.Item?.subject,
+        emailSender: myData?.Item?.email
+    }
+}
