@@ -2,7 +2,6 @@
 import express from 'express';
 import cors from "cors";
 import accountRoutes from './routes/accountRoutes';
-import emailRoutes from './routes/emailRoutes';
 
 const app = express();
 app.use(
@@ -20,6 +19,5 @@ app.listen(PORT, () => console.log(`Listening to ${PORT}`));
 app.disable('etag');//to guarantee that res.statusCode = 200, unless there is an error
 
 app.use(accountRoutes);
-app.use(emailRoutes);
 
 

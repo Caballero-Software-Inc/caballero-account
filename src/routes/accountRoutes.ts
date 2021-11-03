@@ -117,7 +117,8 @@ router.get('/account/credits', async function (req: any, res: any): Promise<void
     const id = req.query.id;
 
     const credits = await getCredits(email, id);
-    res.json({ credits })
+    res.json({ ok : (credits != null),
+         credits })
 })
 
 

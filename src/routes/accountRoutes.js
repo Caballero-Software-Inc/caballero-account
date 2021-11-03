@@ -188,7 +188,7 @@ router.get('/account/credits', function (req, res) {
                     return [4 /*yield*/, (0, awsDynamoDB_1.getCredits)(email, id)];
                 case 1:
                     credits = _a.sent();
-                    res.json({ credits: credits });
+                    res.json({ ok: (credits != null), credits: credits });
                     return [2 /*return*/];
             }
         });

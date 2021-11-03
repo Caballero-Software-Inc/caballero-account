@@ -2,7 +2,7 @@
   "name": "caballero-account",
   "version": "1.0.0",
   "engines": {
-    "node": "^14.17.1"
+    "node": "^17.0.1"
   },
   "description": "API for working with accounts in Caballero Software",
   "main": "index.ts",
